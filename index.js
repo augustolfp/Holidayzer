@@ -26,11 +26,23 @@ const holidays = [
         }
     }
     return "Não, hoje não é feriado";
-}
+  }
 
+  function filterByMonth(month) {
+    const pattern = "^" + month + "\/";
+    const myRegex = new RegExp(pattern);
+    const filteredHolidays = holidays.filter( holiday => myRegex.test(holiday.date) );
+    return filteredHolidays;
+  }
 
   server.get("/holidays", (request, response) => {
     response.send(holidays);
+  });
+
+  server.get("/holidays/:month", (request, response) => {
+    const month = request.params.month;
+    console.log(`O mes requisitado foi ${month}`);
+    response.send(filterByMonth(month));
   });
 
   server.get("/is-today-holiday", (request, response) => {
